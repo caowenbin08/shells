@@ -77,14 +77,22 @@ tar -zxf "${package_name}"
 mv pyenv ${install_path}
 mv pyenv-virtualenv ${install_path}/pyenv/plugins
 # 如果使用的是bash
-pyenv_root="export PYENV_ROOT=${install_path}/pyenv"
-echo ${pyenv_root} >> ~/.bashrc
-echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+if [ -f "~/.bashrc" ]; then
+    echo "install to bash shell"
+    pyenv_root="export PYENV_ROOT=${install_path}/pyenv"
+    echo ${pyenv_root} >> ~/.bashrc
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+fi
+
 # 如果使用的是zsh
-echo ${pyenv_root} >> ~/.zshrc
-echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
-echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+if [ -f "~/.zshrc" ]; then
+    echo "install to zsh shell"
+    echo ${pyenv_root} >> ~/.zshrc
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+    echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+fi
+
 # 重新加载shell
 # exec $SHELL -l
 echo "安装完成"
