@@ -74,23 +74,23 @@ if [ ! -f "${package_name}" ];then
 fi
 echo "开始安装"
 tar -zxf "${package_name}"
+cur_time=`date +%Y%m%d`
+if [ "`ls -a ${install_path}/pyenv`" = "" ]; then
+    echo "${install_path}/pyenv is empty"
+else
+    echo "${install_path}/pyenv is not empty, backup..."
+    mv ${install_path}/pyenv ${install_path}/pyenv.backup-${cur_time}
+fi
 mv pyenv ${install_path}
 mv pyenv-virtualenv ${install_path}/pyenv/plugins
-# 如果使用的是bash
-if [ -f "~/.bashrc" ]; then
-    echo "install to bash shell"
-    pyenv_root="export PYENV_ROOT=${install_path}/pyenv"
-    echo ${pyenv_root} >> ~/.bashrc
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-fi
 
-# 如果使用的是zsh
-if [ -f "~/.zshrc" ]; then
-    echo "install to zsh shell"
-    echo ${pyenv_root} >> ~/.zshrc
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
-    echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+if [ ! -f "/etc/profile.d/pyenv.sh" ]; then
+    echo "set config to /etc/profile.d/pyenv.sh"
+    pyenv_root="export PYENV_ROOT=${install_path}/pyenv"
+    pyenv_conf=/etc/profile.d/pyenv.sh
+    echo ${pyenv_root} >> ${pyenv_conf}
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ${pyenv_conf}
+    echo 'if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi' >> ${pyenv_conf}
 fi
 
 # 重新加载shell
