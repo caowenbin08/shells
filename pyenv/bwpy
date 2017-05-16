@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sys_name=`uname`
+echo "==========",${sys_name}
+#v=$0
+#wget http://mirrors.sohu.com/python/$v/Python-$v.tar.xz -P /opt/work/lib/pyenv/cache/
+#pyenv install $v
